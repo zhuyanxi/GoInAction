@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"sync"
 	"time"
@@ -13,8 +14,26 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+func testDefer() {
+	defer fmt.Println(1)
+	defer fmt.Println(2)
+	defer fmt.Println(3)
+}
+
 func main() {
+	//testDefer()
+
 	//L01()
 	//L04()
-	L20()
+	//L20()
+	//L22()
+
+	ba := make(chan int)
+	//wg.Add(1)
+	go func() {
+		fmt.Println(<-ba)
+		//wg.Done()
+	}()
+	ba <- 1
+	//wg.Wait()
 }
