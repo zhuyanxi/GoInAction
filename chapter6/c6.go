@@ -27,15 +27,13 @@ func main() {
 	//L04()
 	//L20()
 	//L22()
-	L24()
+	//L24()
 
-	// ba := make(chan int)
-	// wg.Add(1)
-	// go func() {
-	// 	fmt.Println(<-ba)
-	// 	wg.Done()
-	// }()
-	// ba <- 3
-	// wg.Wait()
-	// close(ba)
+	ba := make(chan int, 3)
+	ba <- 1
+	ba <- 2
+	fmt.Println(<-ba)
+	fmt.Println(<-ba)
+	ba <- 3
+	fmt.Println(<-ba)
 }
