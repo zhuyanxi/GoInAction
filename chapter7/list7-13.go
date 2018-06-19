@@ -8,7 +8,7 @@ import (
 	"github.com/goinaction/code/chapter7/patterns/runner"
 )
 
-const timeout = 3 * time.Second
+const timeout = 4 * time.Second
 
 func L713() {
 	log.Println("Starting work.")
