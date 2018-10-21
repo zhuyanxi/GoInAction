@@ -23,17 +23,17 @@ func testDefer() {
 func main() {
 	//testDefer()
 
-	//L01()
+	L01()
 	//L04()
 	//L20()
 	//L22()
 	//L24()
 
-	ba := make(chan int, 3)
-	ba <- 1
-	ba <- 2
-	fmt.Println(<-ba)
-	fmt.Println(<-ba)
-	ba <- 3
-	fmt.Println(<-ba)
+	// ba := make(chan int, 3)
+	// ba <- 1
+	// ba <- 2
+	// fmt.Println(<-ba)
+	// fmt.Println(<-ba)
+	// ba <- 3
+	// fmt.Println(<-ba)
 }
