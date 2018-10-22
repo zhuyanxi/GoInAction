@@ -83,3 +83,8 @@ func handleConn(conn net.Conn) {
 	fmt.Println("Client sent:  ", string(buf[0:n]))
 	conn.Close()
 }
+
+type myConn struct {
+	conn   *net.Conn
+	prefix string
+}
