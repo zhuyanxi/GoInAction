@@ -9,8 +9,8 @@ import (
 
 func main() {
 	//ListenOnce()
-	ListenForever()
-	//ListenUseGoroutine()
+	//ListenForever()
+	ListenUseGoroutine()
 }
 
 func ListenOnce() {
@@ -26,8 +26,12 @@ func ListenOnce() {
 		fmt.Println("Error on accept: ", err)
 		os.Exit(-1)
 	}
-
-	handleConn(conn)
+	connNum := 0
+	mconn := &myConn{
+		conn:   conn,
+		prefix: fmt.Sprintf("%d says", connNum),
+	}
+	handleConn(mconn)
 	fmt.Println("Exiting")
 }
 
@@ -37,6 +41,7 @@ func ListenForever() {
 		fmt.Println("Error on listen: ", err)
 		os.Exit(-1)
 	}
+	connNum := 0
 	for {
 		fmt.Println("Waiting for a connection via Accept(" + time.Now().String() + ")")
 		conn, err := ln.Accept()
@@ -44,8 +49,12 @@ func ListenForever() {
 			fmt.Println("Error on accept: ", err)
 			os.Exit(-1)
 		}
-
-		handleConn(conn)
+		mconn := &myConn{
+			conn:   conn,
+			prefix: fmt.Sprintf("%d says", connNum),
+		}
+		handleConn(mconn)
+		connNum++
 	}
 	fmt.Println("Exiting")
 }
@@ -56,6 +65,7 @@ func ListenUseGoroutine() {
 		fmt.Println("Error on listen: ", err)
 		os.Exit(-1)
 	}
+	connNum := 0
 	for {
 		fmt.Println("Waiting for a connection via Accept(" + time.Now().String() + ")")
 		conn, err := ln.Accept()
@@ -63,28 +73,33 @@ func ListenUseGoroutine() {
 			fmt.Println("Error on accept: ", err)
 			os.Exit(-1)
 		}
-		go handleConn(conn)
+		mconn := &myConn{
+			conn:   conn,
+			prefix: fmt.Sprintf("%d says", connNum),
+		}
+		go handleConn(mconn)
+		connNum++
 	}
 	fmt.Println("Exiting")
 }
 
 // Go type inference is only partial:
 // we had to know what type Accept returned
-func handleConn(conn net.Conn) {
+func handleConn(mconn *myConn) {
 	fmt.Println("Reading once from connection")
 
 	var buf [1024]byte
-	n, err := conn.Read(buf[:])
+	n, err := mconn.conn.Read(buf[:])
 	if err != nil {
 		fmt.Println("Error on read: ", err)
 		os.Exit(-1)
 	}
 
-	fmt.Println("Client sent:  ", string(buf[0:n]))
-	conn.Close()
+	fmt.Println(mconn.prefix, ":", string(buf[0:n]))
+	mconn.conn.Close()
 }
 
 type myConn struct {
-	conn   *net.Conn
+	conn   net.Conn
 	prefix string
 }

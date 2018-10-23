@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 50; i++ {
 		s := "第" + strconv.Itoa(i) + "个"
 		Client([]byte(s))
 	}
