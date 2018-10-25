@@ -14,18 +14,18 @@ func main() {
 	fmt.Println("Go channels starting")
 
 	ch := make(chan *myMsg)
-	go sendChan(ch)
-	go sendChan(ch)
+	go sendChan(ch, "channel 1")
+	go sendChan(ch, "channel 2")
 
 	for msg := range ch {
 		fmt.Println("Msg ", msg.seqNum, ":", msg.message)
 	}
 }
 
-func sendChan(out chan<- *myMsg) {
+func sendChan(out chan<- *myMsg, prefix string) {
 	for i := 0; i < 5; i++ {
 		time.Sleep(time.Second)
-		out <- &myMsg{i, "mooo"}
+		out <- &myMsg{i, fmt.Sprintf("%s: %s", prefix, "moo")}
 	}
 	close(out)
 }
