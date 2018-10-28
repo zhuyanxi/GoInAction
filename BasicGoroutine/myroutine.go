@@ -10,12 +10,9 @@ type myMsg struct {
 	message string
 }
 
-func main() {
-	fmt.Println("Go channels starting")
-	Test1()
-}
-
 func Test1() {
+	fmt.Println("Go channels starting")
+
 	ch1 := make(chan *myMsg)
 	go sendChan(ch1, "channel 1")
 
@@ -54,6 +51,7 @@ func Test1() {
 	}
 }
 
+// out: 只用来向channel中发送 *myMsg 类型的数据
 func sendChan(out chan<- *myMsg, prefix string) {
 	n := 0
 	for i := 0; i < 10; i++ {
