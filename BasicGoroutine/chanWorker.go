@@ -13,8 +13,8 @@ type requestMsg struct {
 	responseChan chan *responseMsg
 }
 
-// requestChan： 只用来从channel中刚接收 *requestMsg 类型的数据
-func chanWorker(requestChan chan *requestMsg) {
+// requestChan： 只用来从channel中接收 *requestMsg 类型的数据
+func chanWorker(requestChan <-chan *requestMsg) {
 	// reqChanClosed := false
 	// for {
 	// 	select {
@@ -32,11 +32,20 @@ func chanWorker(requestChan chan *requestMsg) {
 	// 		break
 	// 	}
 	// }
-	for req := range requestChan {
+
+	// for req := range requestChan {
+	// 	respVal := req.nouce * 1234567
+	// 	response := &responseMsg{respVal}
+	// 	req.responseChan <- response
+	// }
+
+	for {
+		req := <-requestChan
 		respVal := req.nouce * 1234567
 		response := &responseMsg{respVal}
 		req.responseChan <- response
 	}
+
 }
 
 func TestChanWorker() {
